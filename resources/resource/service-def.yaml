@@ -1,0 +1,70 @@
+models:
+
+storages:
+
+resources:
+
+functions:
+- name: SmsSendHandler
+  create: NewSmsHandler
+  daemons:
+  - BmMongodbDaemon
+  - BmRedisDaemon
+  - BmSmsDaemon
+  method: SendSms
+  http: POST
+  args:
+    - name
+
+- name: SmsVerifyHandler
+  create: NewSmsHandler
+  daemons:
+    - BmMongodbDaemon
+    - BmRedisDaemon
+    - BmSmsDaemon
+  method: VerifySmsCode
+  http: POST
+  args:
+    - name
+
+#middlewares:
+#- name: NtmCheckTokenMiddleware
+#  create: NewCheckTokenMiddleware
+#  daemons:
+#  - BmRedisDaemon
+#  args:
+##  - oauth.pharbers.com
+#  - 192.168.100.174:9096
+
+panic:
+  name: SmsCommonPanicHandle
+  create: NewCommonPanicHandle
+
+daemons:
+  - name: BmMongodbDaemon
+    method: NewMongoDBDaemon
+    args:
+      host: 123.56.179.133
+      port: 5555
+#      host: 127.0.0.1
+#      port: 27017
+      database: pharbers-auth-server
+  - name: BmRedisDaemon
+    method: NewRedisDBDaemon
+    args:
+      host: 123.56.179.133
+      port: 6378
+#      host: 127.0.0.1
+#      port: 6379
+      password:
+      database: 0
+  - name: BmSmsDaemon
+    method: NewSmsDaemon
+    args:
+      regionId: cn-beijing
+      accessKeyId: LTAIEoXgk4DOHDGi
+      accessSecret: x75sK6191dPGiu9wBMtKE6YcBBh8EI
+      domain: dysmsapi.aliyuncs.com
+      version: 2017-05-25
+      signName: 法伯科技
+      templateCode: SMS_117415068
