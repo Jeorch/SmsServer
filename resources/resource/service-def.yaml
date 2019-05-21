@@ -14,18 +14,18 @@ functions:
   method: SendSms
   http: POST
   args:
-    - name
+  - name
 
 - name: SmsVerifyHandler
   create: NewSmsHandler
   daemons:
-    - BmMongodbDaemon
-    - BmRedisDaemon
-    - BmSmsDaemon
+  - BmMongodbDaemon
+  - BmRedisDaemon
+  - BmSmsDaemon
   method: VerifySmsCode
   http: POST
   args:
-    - name
+  - name
 
 #middlewares:
 #- name: NtmCheckTokenMiddleware
