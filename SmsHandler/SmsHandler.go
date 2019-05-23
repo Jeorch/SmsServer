@@ -96,27 +96,27 @@ func (h SmsSendHandler) SendSms(w http.ResponseWriter, r *http.Request, _ httpro
 	}
 
 	code := util.SixRandomNumberByPhone()
-	err, result := h.sm.SendMsg(sms.Phone, code)
+	h.sm.SendMsg(sms.Phone, code)
 
-	if err != nil {
-		log.Printf("Error SendMsg %v", err)
-		response["status"] = "error"
-		response["msg"] = "短信发送失败！"
-		enc := json.NewEncoder(w)
-		enc.Encode(response)
-		return 1
-	}
+	//if err != nil {
+	//	log.Printf("Error SendMsg %v", err)
+	//	response["status"] = "error"
+	//	response["msg"] = "短信发送失败！"
+	//	enc := json.NewEncoder(w)
+	//	enc.Encode(response)
+	//	return 1
+	//}
 
-	aliResponse := SmsResponse{}
-	err = json.Unmarshal(result.GetHttpContentBytes(), &aliResponse)
+	//aliResponse := SmsResponse{}
+	//err = json.Unmarshal(result.GetHttpContentBytes(), &aliResponse)
 
-	if aliResponse.Code != "OK" || aliResponse.Message != "OK" {
-		response["status"] = "error"
-		response["msg"] = "短信发送失败！"
-		enc := json.NewEncoder(w)
-		enc.Encode(response)
-		return 1
-	}
+	//if aliResponse.Code != "OK" || aliResponse.Message != "OK" {
+	//	response["status"] = "error"
+	//	response["msg"] = "短信发送失败！"
+	//	enc := json.NewEncoder(w)
+	//	enc.Encode(response)
+	//	return 1
+	//}
 	response["status"] = "success"
 	response["msg"] = "短信发送成功！"
 	err = h.rd.PushPhoneCode(sms.Phone, code, time.Minute * 5)
